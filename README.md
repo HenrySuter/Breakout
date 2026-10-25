@@ -31,9 +31,11 @@ You are to spend between three and eight hours improving this simple Breakout im
 * Implement commentary with calls to an LLM such as Ollama
 
 # Time Details and Changelist
-_TO DO_
-
-<Add information to this section about the time you've taken for this task along with a professional changelist.>
+* Changed the fireball power up colour to orange
+* Added a sticky paddle power up
+   * The ball 'sticks' and can be moved around while stuck using paddle control keys
+   * The ball is released after the power up ends (5 seconds)
+   * The ball is released in the direction of the mouse cursor
 
 ---
 
