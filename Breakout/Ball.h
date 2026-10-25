@@ -10,7 +10,7 @@ class Ball {
 public:
     Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager);
     ~Ball();
-    void update(float dt);
+    void update(float dt, sf::Vector2f mousePos);
     void render();
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
@@ -23,6 +23,12 @@ private:
     bool _isAlive;
     bool _isFireBall;
     float _timeWithPowerupEffect;
+    
+    //sticky variables
+    sf::Vector2f paddlePos;
+    sf::Vector2f offset;
+    bool offsetCap = false;
+    sf::Vector2f _aimDir;
 
     GameManager* _gameManager;  // Reference to the GameManager
 

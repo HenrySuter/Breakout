@@ -23,7 +23,9 @@ int main()
 
         deltaTime = clock.restart().asSeconds();
 
-        gameManager.update(deltaTime);
+        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+        gameManager.update(deltaTime, mousePos);
 
         window.clear();
         gameManager.render();

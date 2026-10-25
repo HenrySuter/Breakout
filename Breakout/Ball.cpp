@@ -14,7 +14,7 @@ Ball::~Ball()
 {
 }
 
-void Ball::update(float dt)
+void Ball::update(float dt, sf::Vector2f mousePos)
 {
     // check for powerup, tick down or correct
     if (_timeWithPowerupEffect > 0.f)
@@ -70,13 +70,41 @@ void Ball::update(float dt)
     // collision with paddle
     if (_sprite.getGlobalBounds().intersects(_gameManager->getPaddle()->getBounds()))
     {
-        _direction.y *= -1; // Bounce vertically
+        if (_gameManager->getPaddle()->getSticky())//checks if paddle is sticky
+        {
+            _direction = { 0.f, 0.f }; //stops the ball
+            paddlePos = _gameManager->getPaddle()->getPos();
 
-        float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
-        _direction.x = paddlePositionProportion * 2.0f - 1.0f;
+            if (!offsetCap)//only runs once to capture the offset
+            {
+                offset.x = _sprite.getPosition().x - paddlePos.x;
+                offset.y = ((_gameManager->getPaddle()->getBounds().top - 2 * RADIUS) - paddlePos.y) + 1;//plus 1 so the ball stays slightly intersecting with the paddle
+                offsetCap = true;//adjust flag
+            }
 
-        // Adjust position to avoid getting stuck inside the paddle
-        _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+            _sprite.setPosition(paddlePos + offset);//move the ball with the paddle
+
+            //mouse pos - centre of ball = aim direction
+            sf::Vector2f centre = _sprite.getPosition() + sf::Vector2f(RADIUS, RADIUS);
+            sf::Vector2f aim = mousePos - centre;
+
+			_aimDir = aim / std::sqrt(aim.x * aim.x + aim.y * aim.y);//normalise aim direction
+        }
+        else if (offsetCap)
+        {
+            _direction = _aimDir;
+            offsetCap = false;
+        }
+        else
+        {
+            _direction.y *= -1; // Bounce vertically
+
+            float paddlePositionProportion = (_sprite.getPosition().x - _gameManager->getPaddle()->getBounds().left) / _gameManager->getPaddle()->getBounds().width;
+            _direction.x = paddlePositionProportion * 2.0f - 1.0f;
+
+            // Adjust position to avoid getting stuck inside the paddle
+            _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+        }
     }
 
     // collision with bricks

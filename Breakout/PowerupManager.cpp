@@ -64,7 +64,7 @@ void PowerupManager::spawnPowerup()
 
     float spawnX = xDist(_rng);
 
-    switch (rand() % 5)
+    switch (rand() % 6)
     {
     case 0:
         _powerups.push_back(new PowerupBigPaddle(_window, _paddle, _ball, spawnX));
@@ -80,6 +80,9 @@ void PowerupManager::spawnPowerup()
         break;
     case 4:
         _powerups.push_back(new PowerupFireBall(_window, _paddle, _ball, spawnX));
+        break;
+    case 5:
+        _powerups.push_back(new PowerupStickyPaddle (_window, _paddle, _ball, spawnX));
         break;
     }
 

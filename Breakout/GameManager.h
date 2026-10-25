@@ -14,7 +14,7 @@ class GameManager {
 public:
     GameManager(sf::RenderWindow* window);
     void initialize();
-    void update(float dt);
+    void update(float dt, sf::Vector2f mousePos);
     void loseLife();
     void render();
     void levelComplete();

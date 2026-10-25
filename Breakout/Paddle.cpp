@@ -43,6 +43,15 @@ void Paddle::update(float dt)
     {
         setWidth(1.0f, 0.0f); // Reset to default width after duration
     }
+
+    if (_timeInNewState > 0)
+    {
+        _timeInNewState -= dt;
+    }
+    else
+    {
+        setSticky(sf::Color::Cyan, 0.0f, false); // Reset to default width after duration
+    }
 }
 
 void Paddle::render()
@@ -64,4 +73,21 @@ void Paddle::setWidth(float coeff, float duration)
     _timeInNewSize = duration;
     float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
     _sprite.setPosition(newX, _sprite.getPosition().y);
+}
+
+void Paddle::setSticky(sf::Color colour, float duration, bool sticky)
+{
+	_isSticky = sticky;
+    _sprite.setFillColor(colour);
+    _timeInNewState = duration;
+}
+
+bool Paddle::getSticky()
+{
+    return _isSticky;
+}
+
+sf::Vector2f Paddle::getPos()
+{
+    return _sprite.getPosition();
 }
